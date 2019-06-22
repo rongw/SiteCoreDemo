@@ -1,0 +1,273 @@
+
+Project: 
+  Name: "Sitecore"
+
+EnvironmentVariables:  # an array of variables to go with execution
+    - Variable: 
+        Key: OS
+        Value: Windows 2012
+    - Variable: 
+        Key: RAM
+        Value: 256
+
+Pipeline:
+  
+  - Step:
+      Name: PipelineInitiation
+      Enabled: Yes
+      Stack: 
+        - Type: "Script"
+  
+  
+  - Step:
+      Name: GetSecrets
+      Enabled: No
+      Stack: 
+        Type: "Container" 
+        Image: "DevOpsBase" 
+      Inputs:
+        # any environment vaialble override comes here    
+      Pre-Execution: "GetAzureVault"
+      Main-Execution: ""
+      Post-Execution: ""
+      Exception-Execution: ""
+      Outputs:
+          - Variable: 
+              Key: <bla>
+              Value: <blae
+          - Variable: 
+              Key: <bla>
+              Value: <blae>              
+  
+  
+  - Step:
+      Name: Build
+      Enabled: No 
+      Stack: 
+        - Type: "Container"
+        - Image: ""
+      Inputs:           
+        - Variable:
+            Key: ThreadPool
+            Value: 2
+      Pre-Execution: "GeneratePipeline.sh -parameter from variables"
+      Main-Execution: "Container for exectuion"
+      Post-Execution: ""
+      Exception-Execution: ""
+      OutputVariables:
+          - Variable: 
+              Key: <bla>
+              Value: <blae
+          - Variable: 
+              Key: <bla>
+              Value: <blae>              
+  
+  
+  - Step:
+      Name: Test
+      Enabled: No 
+      Stack: 
+        - Type: "Container"
+        - Image: ""
+      Pre-Execution: "GetAzureVault"
+      Main-Execution: ""
+      Post-Execution: ""
+      Exception-Execution: ""
+      OutputVariables:
+          
+  
+  - Step:
+      Name: CodeScan
+      Enabled: No 
+      Stack: 
+        - Type: "Container"
+        - Image: "sonarqube"
+      Inputs:           
+        - Variable:
+            Key: ApplicaitonLanguage
+            Value: .Net
+      Pre-Execution: "GetAzureVault"
+      Main-Execution: ""
+      Post-Execution: ""
+      Exception-Execution: ""
+      OutputVariables:
+
+  
+  - Step:
+      Name: SecurityScan
+      Enabled: No 
+      Stack: 
+        - Type: "Container"
+        - Image: "qualysis"
+      Inputs:           
+        - Variable:
+            Key: Sensitivity
+            Value: "High"
+      Pre-Execution: ""
+      Main-Execution: ""
+      Post-Execution: ""
+      Exception-Execution: ""
+      OutputVariables:
+  
+  
+  - Step:
+      Name: LicenseScan
+      Enabled: Yes 
+      Stack: 
+        - Type: "Scripts"
+        - ScritpsDir: "license_scan"
+      Inputs:           
+        - Variable:
+            Key: Sensitivity
+            Value: "High"
+      Pre-Execution: ""
+      Main-Execution: ""
+      Post-Execution: ""
+      Exception-Execution: ""
+      OutputVariables:
+  
+
+  - Step:
+      Name: SysTest
+      Enabled: Yes 
+      Stack: 
+        - Type: "Container"
+        - Image: "blablablabal"
+      Inputs:           
+        - Variable:
+            Key: Sensitivity
+            Value: "High"
+      Pre-Execution: "prepartion"
+      Main-Execution: ""
+      Post-Execution: ""
+      Exception-Execution: ""
+      OutputVariables:
+  
+  - Step:
+      Name: IntegrationTests
+      Enabled: Yes 
+      Stack: 
+        - Type: "Scripts"
+        - ScritpsDir: "tests/int_tests/"
+      Inputs:           
+        - Variable:
+            Key: Sensitivity
+            Value: "High"
+      Pre-Execution: ""
+      Main-Execution: ""
+      Post-Execution: ""
+      Exception-Execution: ""
+      OutputVariables:        
+  
+  - Step:
+      Name: RaiseCR
+      Enabled: No 
+      Stack: 
+        - Type: "Scripts"
+        - ScritpsDir: "integration/int_tests/"
+      Inputs:           
+        - Variable:
+            Key: Sensitivity
+            Value: "High"
+      Pre-Execution: ""
+      Main-Execution: ""
+      Post-Execution: ""
+      Exception-Execution: ""
+      OutputVariables:       
+  
+  - Step:
+      Name: WaitCR
+      Enabled: No 
+      Stack: 
+        - Type: "Scripts"
+        - ScritpsDir: "integration/int_tests/"
+      Inputs:           
+        - Variable:
+            Key: Sensitivity
+            Value: "High"
+      Pre-Execution: ""
+      Main-Execution: ""
+      Post-Execution: ""
+      Exception-Execution: ""
+      OutputVariables:         
+  
+  - Step:
+      Name: Deployment
+      Enabled: No 
+      Stack: 
+        - Type: "Scripts"
+        - ScritpsDir: "integration/int_tests/"
+      Inputs:           
+        - Variable:
+            Key: Sensitivity
+            Value: "High"
+      Pre-Execution: ""
+      Main-Execution: ""
+      Post-Execution: ""
+      Exception-Execution: ""
+      OutputVariables:       
+  
+  - Step:
+      Name: CloseCR
+      Enabled: No 
+      Stack: 
+        - Type: "Scripts"
+        - ScritpsDir: "integration/int_tests/"
+      Inputs:           
+        - Variable:
+            Key: Sensitivity
+            Value: "High"
+      Pre-Execution: ""
+      Main-Execution: ""
+      Post-Execution: ""
+      Exception-Execution: ""
+      OutputVariables:         
+  
+  - Step:
+      Name: PerformanceTest
+      Enabled: Yes 
+      Stack: 
+        - Type: "Scripts"
+        - ScritpsDir: "integration/int_tests/"
+      Inputs:           
+        - Variable:
+            Key: Sensitivity
+            Value: "High"
+      Pre-Execution: ""
+      Main-Execution: ""
+      Post-Execution: ""
+      Exception-Execution: ""
+      OutputVariables:        
+  
+  - Step:
+      Name: Notification
+      Enabled: Yes 
+      Stack: 
+        - Type: "Scripts"
+        - ScritpsDir: "integration/int_tests/"
+      Inputs:           
+        - Variable:
+            Key: Sensitivity
+            Value: "High"
+      Pre-Execution: ""
+      Main-Execution: ""
+      Post-Execution: ""
+      Exception-Execution: ""
+      OutputVariables:        
+  
+  - Step:
+      Name: PipelineClosure
+      Enabled: Yes 
+      Stack: 
+        - Type: "Scripts"
+        - ScritpsDir: "integration/int_tests/"
+      Inputs:           
+        - Variable:
+            Key: Sensitivity
+            Value: "High"
+      Pre-Execution: ""
+      Main-Execution: ""
+      Post-Execution: ""
+      Exception-Execution: ""
+      OutputVariables:             
+
